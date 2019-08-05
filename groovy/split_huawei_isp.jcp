@@ -1,0 +1,61 @@
+////////////////////////////////////////////////////////////
+// imports go here
+////////////////////////////////////////////////////////////
+
+class HuaweiSplit{ void executeScript(session, context, log, REL_SUCCESS, REL_FAILURE)
+    {
+    def flowFile = session.get()
+    if (!flowFile) return
+    flowFile = session.write(flowFile,
+           { inputStream, outputStream ->
+               String line
+               log.info('Starting ...')
+               String new_line = ''
+               final BufferedReader inReader = new BufferedReader(new InputStreamReader(inputStream, 'UTF-8'))
+               int counter = 0
+               while (line = inReader.readLine()) {
+                   log.info(line)
+                   counter += 1
+                   String[] cols = line.tokenize('|')
+                   log.info('Reading line: ' + counter)
+                   String[] measTypes = cols[4].split().collect { it as String }
+                   String[] measValues = cols[5].split().collect { it as String }
+                   for(int i in 0..measTypes.length -1)
+                   {
+                     def new_cols = cols[0..2]
+                     new_cols << measTypes[i]
+                     new_cols << measValues[i]
+                     new_line = new_line + new_cols.join(' | ') + '\n'
+                   }
+                   outputStream.write(new_line.getBytes('UTF-8'))
+               }
+           } as StreamCallback)
+     // transfer
+     session.transfer(flowFile, REL_SUCCESS)
+    }
+}
+
+class GroovyProcessor implements Processor {
+    def REL_SUCCESS = new Relationship.Builder().name("success").description('FlowFiles that were successfully processed are routed here').build()
+    def REL_FAILURE = new Relationship.Builder().name("failure").description('FlowFiles that were not successfully processed are routed here').build()
+    def ComponentLog log
+    def hws = new HuaweiSplit()
+    void initialize(ProcessorInitializationContext context) { log = context.logger }
+    Set<Relationship> getRelationships() { return [REL_FAILURE, REL_SUCCESS] as Set }
+    Collection<ValidationResult> validate(ValidationContext context) { null }
+    PropertyDescriptor getPropertyDescriptor(String name) { null }
+    void onPropertyModified(PropertyDescriptor descriptor, String oldValue, String newValue) { }
+    List<PropertyDescriptor> getPropertyDescriptors() { null }
+    String getIdentifier() { null }
+    public void setLogger(ComponentLog logger) { null }
+    void onTrigger(ProcessContext context, ProcessSessionFactory sessionFactory) throws ProcessException {
+        def session = sessionFactory.createSession()
+        try {
+            hws.executeScript(session, context, log, REL_SUCCESS, REL_FAILURE)
+            session.commit()
+        } catch (final Throwable t) {
+            log.error('{} failed to process due to {}; rolling back session', [this, t] as Object[])
+            session.rollback(true)
+            throw t
+}}}
+processor = new GroovyProcessor()
