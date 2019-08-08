@@ -42,3 +42,8 @@ Times are not great, in a 2015 macbook pro takes arround 86 seconds to process a
 
 ## Ericsson case
 In this case, the XML is more simple, so the XSLT is also very straight to process because we can obtain the final CSV ready to be inserted into a table. 
+
+# References
+## Pivot
+* [https://www.xml.com/pub/a/2002/05/01/xslt-string.html](https://www.xml.com/pub/a/2002/05/01/xslt-string.html)
+* [https://www.abbeyworkshop.com/howto/xslt/xslt-split-values/](https://www.abbeyworkshop.com/howto/xslt/xslt-split-values/)
