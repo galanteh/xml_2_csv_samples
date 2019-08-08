@@ -36,7 +36,7 @@ After we have the intermediate XML file, we run:
 ```
 xsltproc --timing -o result_v3.csv huawei_v3_child.xsl result_v3.xml
 ```
-Times are not great, in a 2015 macbook pro takes arround 84 seconds to process a source XML of 24mb. However, it's really better than the second version which takes hours to complete the output in the same hardware.
+Times are not great, in a 2015 macbook pro takes arround 86 seconds to process a source XML of 24mb. However, it's really better than the second version which takes hours to complete the output in the same hardware.
 
 ![](https://raw.githubusercontent.com/galanteh/xml_2_csv_samples/master/results_huawei.xls_v3.jpeg)
 
