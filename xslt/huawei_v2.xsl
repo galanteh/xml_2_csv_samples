@@ -1,4 +1,4 @@
-<xsl:stylesheet version="1.0" xmlns:me="http://latest/nmc-omc/cmNrm.doc#measCollec" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xslFormatting="urn:xslFormatting">
+<xsl:stylesheet version="1.0" xmlns:me="http://latest/nmc-omc/cmNrm.doc#measCollec" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xslFormatting="urn:xslFormatting" exclude-result-prefixes="xslFormatting me xsi">
     <xsl:output method="text" encoding="UTF-8"/>
 
     <xsl:variable name="beginTime" select="//*[local-name()='measCollec']/@beginTime"/>
@@ -68,8 +68,7 @@
                 <xsl:value-of select="$beginTime"/><xsl:text> | </xsl:text>
                 <xsl:value-of select="$measInfoId"/><xsl:text> | </xsl:text>
                 <xsl:value-of select="$measObjLdn" /><xsl:text> | </xsl:text>
-                <xsl:value-of select="substring-before($text_type, $delimiter)"/>
-                <xsl:text> | </xsl:text>
+                <xsl:value-of select="substring-before($text_type, $delimiter)"/><xsl:text> | </xsl:text>
                 <xsl:value-of select="substring-before($text, $delimiter)"/>
                 <xsl:text>&#xa;</xsl:text>
                 <!-- recursive call -->
@@ -85,16 +84,8 @@
                 <xsl:value-of select="$beginTime"/><xsl:text> | </xsl:text>
                 <xsl:value-of select="$measInfoId"/><xsl:text> | </xsl:text>
                 <xsl:value-of select="$measObjLdn" /><xsl:text> | </xsl:text>
-                <xsl:value-of select="substring-before($text_type, $delimiter)"/>
-                <xsl:text> | </xsl:text>
+                <xsl:value-of select="substring-before($text_type, $delimiter)"/><xsl:text> | </xsl:text>
                 <xsl:value-of select="substring-before($text, $delimiter)"/>
-                <xsl:text>&#xa;</xsl:text>
-                <xsl:value-of select="$beginTime"/><xsl:text> | </xsl:text>
-                <xsl:value-of select="$measInfoId"/><xsl:text> | </xsl:text>
-                <xsl:value-of select="$measObjLdn" /><xsl:text> | </xsl:text>
-                <xsl:value-of select="substring-after($text_type, $delimiter)"/>
-                <xsl:text> | </xsl:text>
-                <xsl:value-of select="substring-after($text, $delimiter)"/>
                 <xsl:text>&#xa;</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
