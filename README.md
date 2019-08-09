@@ -26,6 +26,10 @@ In our case, we will use [Apache NiFi](https://nifi.apache.org/) to do that job,
 In the version 2 named huawei_v2.xsl you will find a XLST which slower but pivot the array into rows in the CSV. 
 To see a quick example of this, you check this simple sample of [how to pivot the array into rows](http://xsltransform.net/pNEhB3o)
 
+This method is too slow and inefficient. It took 9 hours and 47 minutes to complete in a 2015 macbook pro with i7 2.5ghz and 16gb RAM.
+
+![](https://raw.githubusercontent.com/galanteh/xml_2_csv_samples/master/results_huawei.xls_v2.png)
+
 ### Doing the pivot in two steps - Version 3
 In the version 3, we are doing the Pivot of the measures but in two steps. First, we output an XML with the values that we need in the CSV. In the second step, we use another XLST to pivot the arrays into rows.
 ```
@@ -36,7 +40,7 @@ After we have the intermediate XML file, we run:
 ```
 xsltproc --timing -o result_v3.csv huawei_v3_child.xsl result_v3.xml
 ```
-Times are not great, in a 2015 macbook pro takes arround 86 seconds to process a source XML of 24mb. However, it's really better than the second version which takes hours to complete the output in the same hardware.
+Times are not great, in a 2015 macbook pro (Intel i7 2.5ghz and 16gb RAM) takes arround 86 seconds to process a source XML of 24mb. However, it's really better than the second version which takes hours to complete the output in the same hardware.
 
 ![](https://raw.githubusercontent.com/galanteh/xml_2_csv_samples/master/results_huawei.xls_v3.jpeg)
 
